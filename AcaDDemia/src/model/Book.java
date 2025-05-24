@@ -10,7 +10,8 @@ public class Book {
         this.title = title;
         this.author = author;
     }
-
+    
+    // Note: Simplified ISBN validation for learning purpose only.
     public boolean isValidISBN() {
         if (isbn == null) {
             return false;
