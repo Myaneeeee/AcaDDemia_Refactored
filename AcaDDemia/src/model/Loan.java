@@ -41,7 +41,7 @@ public class Loan {
             System.out.println("Fine for " + user.name + ": $" + fine);
         }
         // Send notification to user
-        notification.sendOverdueNotification(name, email, phone, message);
+        notification.sendOverdueNotification(name, email, phone, message, borrowDate);
         // Store notification
         String notificationMessage = "Dear " + name + ", your loan is overdue. Fine: $" + fine + ". Contact: " + email + ", " + phone + " - " + message;
         notifications.add(notificationMessage);
