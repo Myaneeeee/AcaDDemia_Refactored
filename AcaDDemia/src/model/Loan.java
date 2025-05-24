@@ -62,4 +62,8 @@ public class Loan {
     public List<String> getNotifications() {
         return notifications;
     }
+    
+    public String getUserEmail() {
+        return user.getEmail();
+    }
 }
