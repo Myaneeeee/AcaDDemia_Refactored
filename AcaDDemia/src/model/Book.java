@@ -1,9 +1,9 @@
 package model;
 
 public class Book {
-    public String isbn;
-    public String title;
-    public String author;
+    private String isbn;
+    private String title;
+    private String author;
 
     public Book(String isbn, String title, String author) {
         this.isbn = isbn;
@@ -45,5 +45,9 @@ public class Book {
     
     public String getIsbn() {
     	return isbn;
+    }
+    
+    public String getAuthor() {
+    	return author;
     }
 }

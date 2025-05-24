@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User {
-    public String name;
-    public String email;
-    public String phone;
-    public String password;
-    public List<Book> borrowedBooks;
+    private String name;
+    private String email;
+    private String phone;
+    private String password;
+    private List<Book> borrowedBooks;
 
     public User(String name, String email, String phone, String password) {
         this.name = name;
@@ -25,4 +25,24 @@ public class User {
     public String getPassword() {
         return password;
     }
+
+	public String getEmail() {
+		return email;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 }
