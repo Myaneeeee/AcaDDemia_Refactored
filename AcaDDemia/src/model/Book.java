@@ -11,6 +11,12 @@ public class Book {
         this.author = author;
     }
     
+    public Book(Book other) {
+        this.isbn = other.isbn;
+        this.title = other.title;
+        this.author = other.author;
+    }
+    
     // Note: Simplified ISBN validation for learning purpose only.
     public boolean isValidISBN() {
         if (isbn == null) {

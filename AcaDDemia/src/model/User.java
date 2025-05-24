@@ -19,10 +19,14 @@ public class User {
     }
     
     public List<Book> getBorrowedBooks() {
-        return borrowedBooks;
-    }
+	    List<Book> deepCopy = new ArrayList<>();
+	    for (Book b : borrowedBooks) {
+	        deepCopy.add(new Book(b));
+	    }
+	    return deepCopy;
+		}
 
-    public String getPassword() {
-        return password;
+    public void borrowBook(Book book) {
+        borrowedBooks.add(book);
     }
 }
