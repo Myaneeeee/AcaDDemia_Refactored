@@ -27,7 +27,12 @@ public class Library {
     }
 
     public void addBook(String isbn, String title, String author) {
-        books.add(new Book(isbn, title, author));
+        Book book = new Book(isbn, title, author);
+        if (!book.isValidISBN()) {
+            System.out.println("Invalid ISBN");
+            return;
+        }
+        books.add(book);
     }
 
     public void displayBooks() {

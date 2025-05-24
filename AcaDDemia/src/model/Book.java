@@ -12,8 +12,20 @@ public class Book {
     }
 
     public boolean isValidISBN() {
-        // simplified, just check if it's 13 digits and starts with a valid prefix
-        return isbn != null && isbn.matches("^97[89]\\d{10}$");
+        if (isbn == null) {
+            return false;
+        }
+        // ISBN-13: 13 digits, starts with 978 or 979
+        if (isbn.matches("^97[89]\\d{10}$")) {
+            return true;
+        }
+        // ISBN-10: 10 characters, last can be 'X', others digits
+        if (isbn.length() == 10) {
+            String firstNine = isbn.substring(0, 9);
+            char lastChar = isbn.charAt(9);
+            return firstNine.matches("\\d{9}") && (Character.isDigit(lastChar) || lastChar == 'X');
+        }
+        return false;
     }
 
     public void printDetails(String style) {
