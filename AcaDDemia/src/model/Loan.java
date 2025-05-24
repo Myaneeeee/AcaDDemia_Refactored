@@ -19,7 +19,7 @@ public class Loan {
         this.notifications = new ArrayList<>();
     }
 
-    public void processBorrowing(String name, String email, String phone, String message) {
+    public void processBorrowing(String name, String email, String phone, String message, FineCalculator fineCalculator) {
         // Check if book is available
         if (book == null) {
             System.out.println("Book not available");
@@ -33,9 +33,7 @@ public class Loan {
         // Update user's borrowed books list
         user.borrowedBooks.add(book);
         // Calculate overdue fines for the loan
-        LocalDate today = LocalDate.now();
-        long daysOverdue = today.toEpochDay() - borrowDate.toEpochDay();
-        double fine = daysOverdue > 7 ? daysOverdue * 1.0 : 0.0;
+        double fine = calculateFine(fineCalculator);
         // Print fine if applicable
         if (fine > 0) {
             System.out.println("Fine for " + user.name + ": $" + fine);
@@ -61,5 +59,9 @@ public class Loan {
 
     public List<String> getNotifications() {
         return notifications;
+    }
+    
+    private double calculateFine(FineCalculator fineCalculator) {
+        return fineCalculator.calculateFine(borrowDate);
     }
 }
