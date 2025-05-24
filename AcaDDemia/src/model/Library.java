@@ -8,6 +8,14 @@ public class Library {
     private List<Book> books = new ArrayList<>();
     private List<User> users = new ArrayList<>();
     private List<Loan> loans = new ArrayList<>();
+    private FineCalculator fineCalculator;
+    
+    public Library() {
+        this.books = new ArrayList<>();
+        this.users = new ArrayList<>();
+        this.loans = new ArrayList<>();
+        this.fineCalculator = new FineCalculator();
+    }
 
     public void addUser(String name, String email, String phone, String password) {
         users.add(new User(name, email, phone, password));
@@ -20,7 +28,7 @@ public class Library {
             Notification notification = new Notification();
             Loan loan = new Loan(book, user, LocalDate.now(), notification);
             loans.add(loan);
-            loan.processBorrowing(name, email, phone, message);
+            loan.processBorrowing(name, email, phone, message, fineCalculator);
         } else {
             System.out.println("Book or user not found");
         }
@@ -85,7 +93,7 @@ public class Library {
             }
         }
     }
-
+		
     public List<User> getUsers() {
         return new ArrayList<>(users);
     }
