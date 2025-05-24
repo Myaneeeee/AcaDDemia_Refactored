@@ -61,7 +61,12 @@ public class Loan {
         return notifications;
     }
     
+
     private double calculateFine(FineCalculator fineCalculator) {
         return fineCalculator.calculateFine(borrowDate);
+    }
+
+    public String getUserEmail() {
+        return user.getEmail();
     }
 }
