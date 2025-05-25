@@ -31,14 +31,14 @@ public class Loan {
             return;
         }
         // Update user's borrowed books list
-        user.getBorrowedBooks().add(book);
+        user.borrowedBooks.add(book);
         // Calculate overdue fines for the loan
         LocalDate today = LocalDate.now();
         long daysOverdue = today.toEpochDay() - borrowDate.toEpochDay();
         double fine = daysOverdue > 7 ? daysOverdue * 1.0 : 0.0;
         // Print fine if applicable
         if (fine > 0) {
-            System.out.println("Fine for " + user.getName() + ": $" + fine);
+            System.out.println("Fine for " + user.name + ": $" + fine);
         }
         // Send notification to user
         notification.sendOverdueNotification(name, email, phone, message, borrowDate);
