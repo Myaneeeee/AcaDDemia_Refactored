@@ -31,12 +31,12 @@ public class Loan {
             return;
         }
         // Update user's borrowed books list
-        user.borrowedBooks.add(book);
+        user.getBorrowedBooks().add(book);
         // Calculate overdue fines for the loan
         double fine = calculateFine(fineCalculator);
         // Print fine if applicable
         if (fine > 0) {
-            System.out.println("Fine for " + user.name + ": $" + fine);
+            System.out.println("Fine for " + user.getName() + ": $" + fine);
         }
         // Send notification to user
         notification.sendOverdueNotification(name, email, phone, message, borrowDate);
