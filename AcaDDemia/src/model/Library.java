@@ -73,18 +73,21 @@ public class Library {
         }
     }
 
+    private List<String> getAllNotifications() {
+        List<String> allNotifications = new ArrayList<>();
+        for (Loan loan : loans) {
+            allNotifications.addAll(loan.getNotifications());
+        }
+        return allNotifications;
+    }
+
     public void showUserNotifications(String email, String password) {
         User user = users.stream().filter(u -> u.getEmail().equals(email) && u.getPassword().equals(password)).findFirst().orElse(null);
         if (user == null) {
             System.out.println("Invalid email or password");
             return;
         }
-        List<String> userNotifications = new ArrayList<>();
-        for (Loan loan : loans) {
-            if (loan.getUserEmail().equals(email)) {
-                userNotifications.addAll(loan.getNotifications());
-            }
-        }
+        List<String> userNotifications = getAllNotifications();
         if (userNotifications.isEmpty()) {
             System.out.println("No notifications for user: " + email);
         } else {

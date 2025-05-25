@@ -19,28 +19,35 @@ public class Loan {
         this.notifications = new ArrayList<>();
     }
 
-    public void processBorrowing(String name, String email, String phone, String message, FineCalculator fineCalculator) {
-        // Check if book is available
+    private boolean checkBookValidity() {
         if (book == null) {
             System.out.println("Book not available");
-            return;
+            return false;
         }
-        // Validate ISBN of the book
         if (!book.isValidISBN()) {
             System.out.println("Invalid ISBN");
-            return;
+            return false;
         }
-        // Update user's borrowed books list
-        user.getBorrowedBooks().add(book);
-        // Calculate overdue fines for the loan
+        return true;
+    }
+
+    private double checkUserFine(FineCalculator fineCalculator) {
         double fine = calculateFine(fineCalculator);
-        // Print fine if applicable
         if (fine > 0) {
             System.out.println("Fine for " + user.getName() + ": $" + fine);
         }
-        // Send notification to user
+        return fine;
+    }
+
+    public void processBorrowing(String name, String email, String phone, String message, FineCalculator fineCalculator) {
+        if (!checkBookValidity()) {
+            return;
+        }
+        user.getBorrowedBooks().add(book);
+
+        double fine  = checkUserFine(fineCalculator);
         notification.sendOverdueNotification(name, email, phone, message, borrowDate);
-        // Store notification
+        
         String notificationMessage = "Dear " + name + ", your loan is overdue. Fine: $" + fine + ". Contact: " + email + ", " + phone + " - " + message;
         notifications.add(notificationMessage);
     }
