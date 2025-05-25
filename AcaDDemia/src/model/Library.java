@@ -22,7 +22,7 @@ public class Library {
     }
 
     public void borrowBook(String name, String email, String phone, String isbn, String message) {
-        Book book = books.stream().filter(b -> b.getIsbn().equals(isbn)).findFirst().orElse(null);
+        Book book = books.stream().filter(b -> b.getISBN().equals(isbn)).findFirst().orElse(null);
         User user = users.stream().filter(u -> u.getName().equals(name) && u.getEmail().equals(email)).findFirst().orElse(null);
         if (book != null && user != null) {
             Notification notification = new Notification();
@@ -34,7 +34,21 @@ public class Library {
         }
     }
 
-    public void addBook(String isbn, String title, String author) {
+    public void addBook(String isbnString, String title, String author) {
+        ISBN isbn;
+        try {
+            if (isbnString.length() == 10) {
+                isbn = new ISBN10(isbnString);
+            } else if (isbnString.length() == 13) {
+                isbn = new ISBN13(isbnString);
+            } else {
+                System.out.println("Invalid ISBN length (must be 10 or 13 digits)");
+                return;
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid ISBN: " + e.getMessage());
+            return;
+        }
         Book book = new Book(isbn, title, author);
         if (!book.isValidISBN()) {
             System.out.println("Invalid ISBN");
@@ -68,7 +82,7 @@ public class Library {
             System.out.println("No loans in the library");
         } else {
             for (Loan loan : loans) {
-                System.out.println("Book ISBN: " + loan.getBook().getIsbn() + ", User: " + loan.getUser().getName() + ", Borrow Date: " + loan.getBorrowDate());
+                System.out.println("Book ISBN: " + loan.getBook().getISBN() + ", User: " + loan.getUser().getName() + ", Borrow Date: " + loan.getBorrowDate());
             }
         }
     }
