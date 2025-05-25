@@ -14,8 +14,8 @@ public class Library {
     }
 
     public void borrowBook(String name, String email, String phone, String isbn, String message) {
-        Book book = books.stream().filter(b -> b.isbn.equals(isbn)).findFirst().orElse(null);
-        User user = users.stream().filter(u -> u.name.equals(name) && u.email.equals(email)).findFirst().orElse(null);
+        Book book = books.stream().filter(b -> b.getIsbn().equals(isbn)).findFirst().orElse(null);
+        User user = users.stream().filter(u -> u.getName().equals(name) && u.getEmail().equals(email)).findFirst().orElse(null);
         if (book != null && user != null) {
             Notification notification = new Notification();
             Loan loan = new Loan(book, user, LocalDate.now(), notification);
@@ -50,7 +50,7 @@ public class Library {
             System.out.println("No users in the library");
         } else {
             for (User user : users) {
-                System.out.println("Name: " + user.name + ", Email: " + user.email + ", Phone: " + user.phone);
+                System.out.println("Name: " + user.getName() + ", Email: " + user.getEmail() + ", Phone: " + user.getPhone());
             }
         }
     }
@@ -60,7 +60,7 @@ public class Library {
             System.out.println("No loans in the library");
         } else {
             for (Loan loan : loans) {
-                System.out.println("Book ISBN: " + loan.getBook().getIsbn() + ", User: " + loan.getUser().name + ", Borrow Date: " + loan.getBorrowDate());
+                System.out.println("Book ISBN: " + loan.getBook().getIsbn() + ", User: " + loan.getUser().getName() + ", Borrow Date: " + loan.getBorrowDate());
             }
         }
     }
