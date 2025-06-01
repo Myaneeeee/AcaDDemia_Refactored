@@ -39,17 +39,16 @@ public class Loan {
         return fine;
     }
 
-    public void processBorrowing(String name, String email, String phone, String message, FineCalculator fineCalculator) {
+    public void processBorrowing(UserDetails userDetails, String message, FineCalculator fineCalculator) {
         if (!checkBookValidity()) {
             return;
         }
-        user.getBorrowedBooks().add(book);
-
-        double fine  = checkUserFine(fineCalculator);
-        notification.sendOverdueNotification(name, email, phone, message, borrowDate);
-        
-        String notificationMessage = "Dear " + name + ", your loan is overdue. Fine: $" + fine + ". Contact: " + email + ", " + phone + " - " + message;
-        notifications.add(notificationMessage);
+        borrow();
+        double fine = calculateFine(fineCalculator);
+        if (fine > 0) {
+            checkUserFine(fineCalculator);
+        }
+        notifyUser(userDetails, message);
     }
 
     public User getUser() {
@@ -75,5 +74,28 @@ public class Loan {
 
     public String getUserEmail() {
         return user.getEmail();
+    }
+
+     private void borrow() {
+        user.borrowBook(book);
+    }
+
+    private void notifyUser(UserDetails userDetails, String message) {
+        String notificationMessage = notification.sendOverdueNotification(
+            userDetails.getName(),
+            userDetails.getEmail(),
+            userDetails.getPhone(),
+            message,
+            borrowDate
+        );
+        notifications.add(notificationMessage);
+    }
+
+    public String getBookIsbn() {
+        return book.getISBN().getValue();
+    }
+
+    public String getUsername() {
+        return user.getName();
     }
 }
