@@ -84,7 +84,7 @@ public class Library {
             System.out.println("No loans in the library");
         } else {
             for (Loan loan : loans) {
-                System.out.println("Book ISBN: " + loan.getBook().getISBN() + ", User: " + loan.getUser().getName() + ", Borrow Date: " + loan.getBorrowDate());
+                System.out.println("Book ISBN: " + loan.getBookIsbn() + ", User: " + loan.getUsername() + ", Borrow Date: " + loan.getBorrowDate());
             }
         }
     }

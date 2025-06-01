@@ -46,7 +46,7 @@ public class Loan {
         borrow();
         double fine = calculateFine(fineCalculator);
         if (fine > 0) {
-            System.out.println("Fine for " + user.getName() + ": $" + fine);
+            checkUserFine(fineCalculator);
         }
         notifyUser(userDetails, message);
     }
@@ -89,5 +89,13 @@ public class Loan {
             borrowDate
         );
         notifications.add(notificationMessage);
+    }
+
+    public String getBookIsbn() {
+        return book.getISBN().getValue();
+    }
+
+    public String getUsername() {
+        return user.getName();
     }
 }
