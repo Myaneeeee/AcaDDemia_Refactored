@@ -1,7 +1,12 @@
 package app;
 
 import java.util.Scanner;
+
+import model.ISBN;
+import model.ISBN10;
+import model.ISBN13;
 import model.Library;
+import model.UserDetails;
 
 public class AppManager {
     private Library library;
@@ -55,7 +60,8 @@ public class AppManager {
         String phone = scanner.nextLine();
         System.out.print("Enter Password: ");
         String password = scanner.nextLine();
-        library.addUser(name, email, phone, password);
+        UserDetails userDetails = new UserDetails(name, email, phone, password);
+        library.addUser(userDetails);
         System.out.println("User added successfully");
     }
 
@@ -68,9 +74,24 @@ public class AppManager {
         String borrowPhone = scanner.nextLine();
         System.out.print("Enter Book ISBN: ");
         String borrowIsbn = scanner.nextLine();
+        ISBN borrowIsbnObj;
+        try {
+            if (borrowIsbn.length() == 10) {
+                borrowIsbnObj = new ISBN10(borrowIsbn);
+            } else if (borrowIsbn.length() == 13) {
+                borrowIsbnObj = new ISBN13(borrowIsbn);
+            } else {
+                System.out.println("Invalid ISBN length (must be 10 or 13 digits)");
+                return;
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid ISBN: " + e.getMessage());
+            return;
+        }
         System.out.print("Enter Notification Message: ");
         String message = scanner.nextLine();
-        library.borrowBook(borrowName, borrowEmail, borrowPhone, borrowIsbn, message);
+        UserDetails borrowUserDetails = new UserDetails(borrowName, borrowEmail, borrowPhone, "");
+        library.borrowBook(borrowUserDetails, borrowIsbnObj, message);
     }
 
     private void getUserNotifications() {

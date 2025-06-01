@@ -5,30 +5,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Library {
-    private List<Book> books = new ArrayList<>();
-    private List<User> users = new ArrayList<>();
-    private List<Loan> loans = new ArrayList<>();
+    private List<Book> books;
+    private List<User> users;
+    private List<Loan> loans;
+    private BookDisplayService bookDisplayService;
     private FineCalculator fineCalculator;
     
     public Library() {
         this.books = new ArrayList<>();
         this.users = new ArrayList<>();
         this.loans = new ArrayList<>();
+        this.bookDisplayService = new BookDisplayService();
         this.fineCalculator = new FineCalculator();
     }
 
-    public void addUser(String name, String email, String phone, String password) {
-        users.add(new User(name, email, phone, password));
+    public void addUser(UserDetails userDetails) {
+        users.add(new User(userDetails.getName(), userDetails.getEmail(), userDetails.getPhone(), userDetails.getPassword()));
     }
 
-    public void borrowBook(String name, String email, String phone, String isbn, String message) {
+    public void borrowBook(UserDetails userDetails, ISBN isbn, String message) {
         Book book = books.stream().filter(b -> b.getISBN().equals(isbn)).findFirst().orElse(null);
-        User user = users.stream().filter(u -> u.getName().equals(name) && u.getEmail().equals(email)).findFirst().orElse(null);
+        User user = users.stream().filter(u -> u.getName().equals(userDetails.getName()) && u.getEmail().equals(userDetails.getEmail())).findFirst().orElse(null);
         if (book != null && user != null) {
             Notification notification = new Notification();
             Loan loan = new Loan(book, user, LocalDate.now(), notification);
             loans.add(loan);
-            loan.processBorrowing(name, email, phone, message, fineCalculator);
+            loan.processBorrowing(userDetails, message, fineCalculator);
         } else {
             System.out.println("Book or user not found");
         }
@@ -62,7 +64,7 @@ public class Library {
             System.out.println("No books in the library");
         } else {
             for (Book book : books) {
-                book.printDetails("full");
+                bookDisplayService.display(book, "full");
             }
         }
     }
