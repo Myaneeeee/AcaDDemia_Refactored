@@ -31,22 +31,28 @@ public class Loan {
         return true;
     }
 
-    private double checkUserFine(FineCalculator fineCalculator) {
-        double fine = calculateFine(fineCalculator);
+    private double checkUserFine() {
+        double fine = calculateOverdueFine();
         if (fine > 0) {
             System.out.println("Fine for " + user.getName() + ": $" + fine);
         }
         return fine;
     }
+    
+    public double calculateOverdueFine() {
+        LocalDate today = LocalDate.now();
+        long daysOverdue = today.toEpochDay() - borrowDate.toEpochDay();
+        return daysOverdue > 7 ? daysOverdue * 1.0 : 0.0;
+    }
 
-    public void processBorrowing(UserDetails userDetails, String message, FineCalculator fineCalculator) {
+    public void processBorrowing(UserDetails userDetails, String message) {
         if (!checkBookValidity()) {
             return;
         }
         borrow();
-        double fine = calculateFine(fineCalculator);
+        double fine = calculateOverdueFine();
         if (fine > 0) {
-            checkUserFine(fineCalculator);
+            checkUserFine();
         }
         notifyUser(userDetails, message);
     }
@@ -66,11 +72,6 @@ public class Loan {
     public List<String> getNotifications() {
         return notifications;
     }
-    
-
-    private double calculateFine(FineCalculator fineCalculator) {
-        return fineCalculator.calculateFine(borrowDate);
-    }
 
     public String getUserEmail() {
         return user.getEmail();
@@ -86,7 +87,8 @@ public class Loan {
             userDetails.getEmail(),
             userDetails.getPhone(),
             message,
-            borrowDate
+            borrowDate,
+            calculateOverdueFine()
         );
         notifications.add(notificationMessage);
     }
